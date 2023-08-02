@@ -11,6 +11,7 @@ export default class App extends Component {
         <div className='container'>
           <div className="row"> 
             <News/>
+            {/* this is a commnt */}
           </div>
         </div>
       </>
