@@ -10,21 +10,43 @@ export default class News extends Component {
 
     this.state = {
       articles:this.articles,
-      loadding:false
+      // loadding:false
     }
   }
 
-  async componentDidMount() 
+  async componentDidMount() // this is call after the render method is called
   {
-    console.log("componentDidmount");
-    let url = "https://newsapi.org/v2/top-headlines?country=us&apiKey=97237512be7143b09102baaded6e2ca3";
+    // console.log("componentDidmount");
+    let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=97237512be7143b09102baaded6e2ca3&page=${this.state.page}&pagesize=4`;
+    let data = await fetch(url);
+    let parsedData = await data.json();
+    this.setState({articles: parsedData.articles,page: 1});
+  }
+
+  handleprev = async () => {
+    let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=97237512be7143b09102baaded6e2ca3&page=${this.state.page - 1}&pagesize=4`;
     let data = await fetch(url);
     let parsedData = await data.json();
     this.setState({articles: parsedData.articles});
-  }
 
+    this.setState({
+      page:this.state.page - 1,
+    })
+  }
+   
+  handlenext = async () => {
+    let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=97237512be7143b09102baaded6e2ca3&page=${this.state.page + 1}&pagesize=4`;
+    let data = await fetch(url);
+    let parsedData = await data.json();
+    this.setState({articles: parsedData.articles});
+
+    this.setState({
+      page:this.state.page + 1,
+    })
+  }
+   
   render(props) {
-    console.log("Render");
+    
     return (
       <>
         <div className="container">
@@ -40,6 +62,10 @@ export default class News extends Component {
               />
             </div>);
             })}
+            <div className="container d-flex justify-content-between">
+                <button disabled={this.state.page<=1} className="btn btn-dark" onClick={this.handleprev}>&larr; Previous</button>
+                <button disabled={this.state.page>=9} className="btn btn-dark" onClick={this.handlenext}>Next &rarr;</button>
+            </div>
           </div>
         </div>
       </>
