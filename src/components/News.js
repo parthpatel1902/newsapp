@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import NewsItem from "./NewsItem";
+import Spinner from "./Spinner";
 
 export default class News extends Component {
   articles = [];
 
   constructor(){
     super();
-    // console.log("This is constructour");
 
     this.state = {
       articles:this.articles,
@@ -51,6 +51,7 @@ export default class News extends Component {
       <>
         <div className="container">
           <div className="row mt-5">
+            {this.state.loading && <Spinner/>}
             {this.state.articles.map((element)=>{
               return(<div className="col-md-4" key={element.url}>
               <NewsItem
